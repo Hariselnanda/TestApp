@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.adapter.ContactsAdapter
 import com.example.myapplication.model.Contacts
@@ -30,15 +31,14 @@ class MainActivity : AppCompatActivity() {
         val items = ArrayList<Contacts>()
 
         //adding some dummy data to the list
-        items.add(Contacts("1", "monroe", "", "", ""))
-        items.add(Contacts("2", "data", "", "", ""))
-        items.add(Contacts("3", "one", "", "", ""))
-        items.add(Contacts("4", "first", "", "", ""))
-        items.add(Contacts("5", "tes", "", "", ""))
-        //creating our adapter
+//        items.add(Contacts("1", "monroe", "", "", ""))
+//        items.add(Contacts("2", "data", "", "", ""))
+//        items.add(Contacts("3", "one", "", "", ""))
+//        items.add(Contacts("4", "first", "", "", ""))
+//        items.add(Contacts("5", "tes", "", "", ""))
+
         val adapter = ContactsAdapter(viewItems, this)
 
-        //now adding the adapter to recyclerview
         _recyclerView.adapter = adapter
 
         addItemsFromJSON();

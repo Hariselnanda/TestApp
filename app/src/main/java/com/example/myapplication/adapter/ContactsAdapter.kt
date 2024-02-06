@@ -33,7 +33,12 @@ class ContactsAdapter(val list:ArrayList<Contacts>, var mContext: Context): Recy
             _textView.text = data.firstName
 
             itemView.setOnClickListener({
-                mContext.startActivity(Intent(mContext, EditActivity::class.java))
+                val intent = Intent(mContext, EditActivity::class.java)
+                intent.putExtra("firstName", data.firstName)
+                intent.putExtra("lastName", data.lastName)
+                intent.putExtra("email", data.email)
+                intent.putExtra("dob", data.dod)
+                mContext.startActivity(intent)
             })
         }
 
