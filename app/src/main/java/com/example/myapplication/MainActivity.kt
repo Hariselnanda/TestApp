@@ -8,13 +8,16 @@ import com.example.myapplication.adapter.ContactsAdapter
 import com.example.myapplication.model.Contacts
 import org.json.JSONArray
 import org.json.JSONException
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 
 
 class MainActivity : AppCompatActivity() {
 
     private val mRecyclerView: RecyclerView? = null
-    private val viewItems: List<Any> = ArrayList()
+    private val viewItems: ArrayList<Contacts> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,27 +36,50 @@ class MainActivity : AppCompatActivity() {
         items.add(Contacts("4", "first", "", "", ""))
         items.add(Contacts("5", "tes", "", "", ""))
         //creating our adapter
-        val adapter = ContactsAdapter(items, this)
+        val adapter = ContactsAdapter(viewItems, this)
 
         //now adding the adapter to recyclerview
         _recyclerView.adapter = adapter
+
+        addItemsFromJSON();
     }
-//    fun addItemsFromJSON() {
-//        try {
-//            val jsonDataString: String = readJSONDataFromFile()
-//            val jsonArray = JSONArray(jsonDataString)
-//            for (i in 0 until jsonArray.length()) {
-//                val itemObj = jsonArray.getJSONObject(i)
-//                val id = itemObj.getString("id")
-//                val firstName = itemObj.getString("firstName")
-//                val lastName = itemObj.getString("lastName")
-//                val email = itemObj.getString("email")
-//                val dob = itemObj.getString("dob")
-//                val contacts = Contacts(id, firstName, lastName,email, dob)
-//                viewItems.add(contacts)
-//            }
-//        } catch (e: JSONException) {
-//        } catch (e: IOException) {
-//        }
-//    }
+    fun addItemsFromJSON() {
+        try {
+            val jsonDataString: String = readJSONDataFromFile()
+            val jsonArray = JSONArray(jsonDataString)
+            for (i in 0 until jsonArray.length()) {
+                val itemObj = jsonArray.getJSONObject(i)
+                val id = itemObj.getString("id")
+                val firstName = itemObj.getString("firstName")
+                val lastName = itemObj.getString("lastName")
+                val email = itemObj.getString("email")
+                val dob = itemObj.getString("dob")
+                val contacts = Contacts(id, firstName, lastName,email, dob)
+                viewItems.add(contacts)
+            }
+        } catch (e: JSONException) {
+        } catch (e: IOException) {
+        }
+    }
+    @Throws(IOException::class)
+    fun readJSONDataFromFile(): String{
+
+        var inputStream: InputStream? = null
+        val builder = StringBuilder()
+        try{
+            var jsonString: String? = null
+            inputStream = resources.openRawResource(R.raw.data)
+            val bufferedReader = BufferedReader(
+                InputStreamReader(inputStream, "UTF-8")
+            )
+            while (bufferedReader.readLine().also { jsonString = it } != null) {
+                builder.append(jsonString)
+            }
+
+        }finally {
+            inputStream?.close()
+        }
+        return String(builder)
+    }
+
 }
